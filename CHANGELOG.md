@@ -1,4 +1,4 @@
-# Unreleased
+# 0.1.60 (2025-12-04 / 8ffb224)
 
 - Fork from ComputeSoftware/gcp-api
 
