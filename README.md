@@ -2,6 +2,9 @@
 
 gcp-api is a Clojure library which provides programmatic access to GCP services from your Clojure program.
 
+This is a Lambda Island fork, since Compute Software no longer exists, and so
+the upstream version is unmaintained.
+
 ## Rationale
 
 See aws-api's rationale [here](https://github.com/cognitect-labs/aws-api#rationale).
@@ -91,4 +94,4 @@ gcp-api/compute {:git/url   "https://github.com/ComputeSoftware/gcp-api-descript
 
 Copyright © 2020 Compute Software
 
-Distributed under the Eclipse Public License either version 2.0 or (at your option) any later version.
+Distributed under the Eclipse Public License either version 2.0 or (at your option) any later version, see [[LICENSE]].
