@@ -88,7 +88,7 @@
       (select-keys parameter-kvs query-header-form-data-params))))
 
 (defn build-request-map
-  [endpoint op-info op-map]
+  [endpoint global-params op-info op-map]
   (let [{:keys [request timeout as]} op-map
         base-req (cond-> {:method (::descriptor/http-method op-info)
                           :uri    (str (::descriptor/url endpoint)
@@ -98,7 +98,8 @@
                    as (assoc :as as))]
     (with-request-parameters
       base-req
-      (::descriptor/parameters op-info)
+      (merge global-params
+             (::descriptor/parameters op-info))
       (::descriptor/request op-info)
       request)))
 
@@ -123,11 +124,14 @@
 (defn op-request-map
   [cinfo op-map]
   (if-let [op-descriptor (get-op-descriptor cinfo (:op op-map))]
-    (let [request (try
+    (let [endpoint (get-in cinfo [:compute.gcp.api/api-descriptor ::descriptor/endpoint])
+          global-params (get-in cinfo [:compute.gcp.api/api-descriptor ::descriptor/parameters])
+          request (try
                     (build-request-map
-                      (get-in cinfo [:compute.gcp.api/api-descriptor ::descriptor/endpoint])
-                      op-descriptor
-                      op-map)
+                     endpoint
+                     global-params
+                     op-descriptor
+                     op-map)
                     (catch Exception ex
                       {::anom/category ::anom/fault
                        ::anom/message  (str "Exception while creating the HTTP request map. " (.getMessage ex))
